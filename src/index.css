@@ -1,13 +1,57 @@
 body {
+  /* designate fall back fonts if one is not available */
+  font: 14px "centruy Gothic", Futura, sans-serif;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+   /* compatibility stuff*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.board-row:after {
+  clear:both;
+  content: "";
+  display: table;
+}
+
+
+.game {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+/* target .square:focus within .kbd-navigation */
+.kbd-navigation .square:focus {
+  background: #ddd
+}
+
+ol, ul {
+  padding-left: 30px;
+}
+
+.square:focus {
+  outline: none;
+}
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-alighn: center;
+  width: 34px;
+}
+
+.status {
+  margin-bottom: 10px;
 }

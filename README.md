@@ -1,6 +1,16 @@
+# installation
+- Install node.js https://nodejs.org/en/download/
+- This project was built using Webstorm IDE
+  - Webstorm requires setting the node interpreter and package manager
+  - Go to File -> Settings -> Languages & Frameworks -> Node.js and NPM
+    - Set the path to your installation of node.js and npm (or other)
+
 # Getting Started with Create React App
 
+The tutorial can be found here: https://reactjs.org/tutorial/tutorial.html
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Commands can be run in the terminal (as outlined below). 
+Pressing ctrl+c will interrupt any running commands.
 
 ## Available Scripts
 

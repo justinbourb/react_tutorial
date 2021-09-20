@@ -5,6 +5,10 @@
   - Go to File -> Settings -> Languages & Frameworks -> Node.js and NPM
     - Set the path to your installation of node.js and npm (or other)
 
+# lessons learned
+- React concepts including elements, components, props, and state.
+- Installing and running npm
+  
 # Getting Started with Create React App
 
 The tutorial can be found here: https://reactjs.org/tutorial/tutorial.html

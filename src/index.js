@@ -36,6 +36,7 @@ with the parent component.
 class Board extends React.Component {
     /*
     this.state = {squares} will store the state of each square, intialized as null
+    this.xIsNext: keeps track of the turns in the game
      */
     constructor(props) {
         super(props);
@@ -57,7 +58,15 @@ class Board extends React.Component {
                     the components can be re-rendered.
                 b) using built-in function shouldComponentUpdate()
          */
+        /*
+        The const declaration creates a read-only reference to a value. It does not mean the value it holds is
+        immutable—just that the variable identifier cannot be reassigned.
+         */
         const squares = this.state.squares.slice();
+        //exit function if there is a winner or the square is already filled
+        if (calculateWinner(squares) || squares[i]) {
+            return;
+        }
         //toggle placing and X or an O based on xIsNext
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
@@ -73,7 +82,13 @@ class Board extends React.Component {
     }
 
     render() {
-        const status = 'Next player: X';
+        const winner = calculateWinner(this.state.squares);
+        let status = '';
+        if (winner) {
+            status = 'Winner: ' + winner;
+        } else {
+            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        }
         return (
             <div>
                 <div className="status">{status}</div>
@@ -95,6 +110,35 @@ class Board extends React.Component {
             </div>
         );
     }
+}
+
+function calculateWinner(squares) {
+    /*
+    This function will calculate the winner of tic-tac-toe.
+    cont lines stores all the possible winning combinations of tic-tact-toe
+     */
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+    // loop through all winning combinations to check for a winner
+    for (let i=0; i<lines.length; i++) {
+        const [a, b, c] = lines[i];
+        // check if the first square is filled a
+        // && checks if squares b and c match a
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            // if yes there is a winner
+            return squares[a];
+        }
+    }
+    // else return null - no winner yet
+    return null;
 }
 
 // creates a game

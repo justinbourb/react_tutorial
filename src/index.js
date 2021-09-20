@@ -40,8 +40,9 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            squares: Array(9).fill(null)
-        }
+            squares: Array(9).fill(null),
+            xIsNext: true,
+        };
     }
 
     handleClick(i) {
@@ -57,8 +58,13 @@ class Board extends React.Component {
                 b) using built-in function shouldComponentUpdate()
          */
         const squares = this.state.squares.slice();
-        squares[i] = 'X';
-        this.setState({squares:squares});
+        //toggle placing and X or an O based on xIsNext
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        this.setState({
+            squares:squares,
+            // toggle xIsNext true/false to track game moves
+            xIsNext: !this.state.xIsNext,
+        });
     }
     renderSquare(i) {
         // returns the values from the squares Array, expect X, O, null
@@ -108,8 +114,25 @@ class Game extends React.Component {
     }
 }
 
+// props are passed down from the parent
+function Square(props) {
+    /*
+    This function renders a square on the game board.  onClick fills the square
+    with an X or an O based on the parents prop.value.
+     */
+    return(
+        <button className="square" onClick={props.onClick}>
+            {props.value}
+        </button>
+    );
+}
+
+
+
 // create a tic-tac-toe square
-class Square extends React.Component {
+// The square_component can be simplified into a function component, see function Square
+// components that only contain a render method can be simplified in this way
+class Square_component extends React.Component {
     render() {
         return (
             //this.props is inherited from the parent class Board
@@ -128,4 +151,3 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-//TODO: Next section: https://reactjs.org/tutorial/tutorial.html#function-components

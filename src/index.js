@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// stores winning numbers, since children can't access parent props in react which seems weird
 const global_data = {
-
 }
 
 // If you want to start measuring performance in your app, pass a function
@@ -15,6 +15,8 @@ reportWebVitals();
 
 /*
 9-17-2021
+This app follows the react tutorial: https://reactjs.org/tutorial/tutorial.html
+
 React component class, or React component type. A component takes in parameters, called props
 (short for “properties”), and returns a hierarchy of views to display via the render method.
 
@@ -285,3 +287,9 @@ function removeHighlighting(){
         // $(element.toString()).removeClass('winner')
     })
 }
+
+/*
+TODO:
+    1)  Display the location for each move in the format (col, row) in the move history list.
+    2) Add a toggle button that lets you sort the moves in either ascending or descending order.
+ */

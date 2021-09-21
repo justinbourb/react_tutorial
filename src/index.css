@@ -13,7 +13,6 @@ body {
   display: table;
 }
 
-
 .game {
   display: flex;
   flex-direction: row;
@@ -54,4 +53,8 @@ ol, ul {
 
 .status {
   margin-bottom: 10px;
+}
+
+.winner {
+  background: lawngreen;
 }

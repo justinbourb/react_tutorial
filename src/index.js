@@ -4,12 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const global_data = {
+
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
@@ -30,14 +27,14 @@ state back down to the children by using props; this keeps the child components 
 with the parent component.
  */
 
-
-
 // create the tic-tac-toe board
 class Board extends React.Component {
     renderSquare(i) {
         // returns the values from the squares Array, expect X, O, null
         // passes down props "this.state.value and this.props.value from Board to Square
-        return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)}/>;
+        // pass down square_num={i} to add a class to each square which represents it's number
+        // this can be used for highlighting winning squares
+        return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} square_num={i}/>;
     }
 
     render() {
@@ -67,7 +64,7 @@ class Board extends React.Component {
 class Game extends React.Component {
     /*
     this.history will store the array containing moves, one array stored for each move taken
-    this.state = {squares} will store the state of each square, intialized as null
+    this.state = {squares} will store the state of each square, initialized as null
     this.xIsNext: keeps track of the turns in the game
      */
     constructor(props) {
@@ -121,6 +118,12 @@ class Game extends React.Component {
     }
 
     jumpTo(step) {
+        /*
+        Purpose: This function allows time traveling in the tic-tac-toe game.
+            The user can jump to a previous game state by selecting prior moves.
+         */
+        // when time traveling we need to remove highlighting from the winners
+        removeHighlighting()
         this.setState({
             stepNumber: step,
             xIsNext: (step % 2) === 0,
@@ -152,7 +155,12 @@ class Game extends React.Component {
         if (winner) {
             status = 'Winner: ' + winner;
         } else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+            if (this.state.stepNumber >= 9) {
+                status = 'The game ended in a draw.'
+            }
+            else {
+                status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+            }
         }
         return (
             <div className="game">
@@ -174,14 +182,20 @@ function Square(props) {
     This function renders a square on the game board.  onClick fills the square
     with an X or an O based on the parents prop.value.
      */
+
+    // add a conditional class 'winner' if a winner is found, else nothing
+    // css styling will be added to winner elements to highlight the squares
+    // this is the formatting needed to add dynamic class names in react
+    let class_name = { className: "square "+ props.square_num.toString() }
+    console.log(props)
+
+    // {...variable} is the format required for react
     return(
-        <button className="square" onClick={props.onClick}>
+        <button {...class_name} onClick={props.onClick}>
             {props.value}
         </button>
     );
 }
-
-
 
 // create a tic-tac-toe square
 // The square_component can be simplified into a function component, see function Square
@@ -201,8 +215,12 @@ class Square_component extends React.Component {
 
 //render to the DOM
 ReactDOM.render(
-    <Game />,
+    <div>
+        <Game />
+        <Game />
+    </div>,
     document.getElementById('root')
+
 );
 
 function calculateWinner(squares) {
@@ -226,10 +244,44 @@ function calculateWinner(squares) {
         // check if the first square is filled a
         // && checks if squares b and c match a
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            // if yes there is a winner
+            // highlight the winning squares
+            global_data['winner'] = lines[i]
+            highlightWinners(lines[i])
             return squares[a];
         }
     }
     // else return null - no winner yet
     return null;
+}
+
+function highlightWinners(winner_list){
+    /*
+    Purpose: This function will highlight the winning squares by adding a class the the appropriate square.
+        This class will be targeted by css for highlighting.
+    Considerations: Using the time machine feature of the app will likely require removing the winner class.
+    Input: winner_list a list of winning positions.  expected format [0, 1, 2]
+    Return: nothing
+    Output: adds winner class winning classes in the DOM
+     */
+    winner_list.forEach(element=>{
+        // in javascript
+        let target = document.getElementsByClassName(element.toString())[0];
+        target.classList.add('winner')
+        // in jQuery
+        // $(selector).addClass(className)
+    })
+}
+
+function removeHighlighting(){
+    /*
+    Purpose: This function will remove the highlighting from winning squares by removing the 'winner' class.
+           This will prevent the css .winner rule from activating.
+     */
+    console.log(global_data.winner)
+    global_data.winner.forEach(element => {
+        let target = document.getElementsByClassName(element.toString())[0];
+        target.classList.remove('winner')
+        // jQuery
+        // $(element.toString()).removeClass('winner')
+    })
 }
